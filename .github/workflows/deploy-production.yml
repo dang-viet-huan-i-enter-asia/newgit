@@ -3,7 +3,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - main   # Trigger khi push vào nhánh main (production)
+      - master   # Trigger khi push vào nhánh main (production)
 
 jobs:
   deploy-production:
