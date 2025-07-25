@@ -1,22 +1,30 @@
-name: Deploy to Staging
+name: Deploy Shopify Theme (Stage)
 
 on:
   push:
     branches:
-      - staging   # Trigger khi push vào nhánh staging
+      - staging
 
 jobs:
-  deploy-staging:
-    name: Deploy Theme to Staging
+  deploy-stage:
     runs-on: ubuntu-latest
     environment: staging
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Show Staging Secret
-        env:
-          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+
+      - name: Deploy theme to Shopify (stage)
         run: |
-          echo "Deploying to STAGING..."
-          echo "Token: $SHOPIFY_CLI_THEME_TOKEN"  # Sẽ bị mask thành ***
+          shopify theme push \
+            --json \
+            --theme 142213447734 \
+            --store ${{ secrets.SHOPIFY_FLAG_STORE }} \
+            --password ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
