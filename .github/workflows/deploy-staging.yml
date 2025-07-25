@@ -1,0 +1,22 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - staging   # Trigger khi push vào nhánh staging
+
+jobs:
+  deploy-staging:
+    name: Deploy Theme to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Staging Secret
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+        run: |
+          echo "Deploying to STAGING..."
+          echo "Token: $SHOPIFY_CLI_THEME_TOKEN"  # Sẽ bị mask thành ***

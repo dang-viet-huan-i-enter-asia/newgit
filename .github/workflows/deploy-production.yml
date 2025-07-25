@@ -1,0 +1,22 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main   # Trigger khi push vào nhánh main (production)
+
+jobs:
+  deploy-production:
+    name: Deploy Theme to Production
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Production Secret
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+        run: |
+          echo "Deploying to PRODUCTION..."
+          echo "Token: $SHOPIFY_CLI_THEME_TOKEN"  # Sẽ bị mask thành ***
