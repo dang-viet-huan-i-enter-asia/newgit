@@ -3,7 +3,7 @@ name: Deploy Shopify Theme (Stage)
 on:
   push:
     branches:
-      - stage
+      - staging
 
 jobs:
   deploy-stage:
