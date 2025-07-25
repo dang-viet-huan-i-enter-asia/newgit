@@ -1,22 +1,30 @@
-name: Deploy to Production
+name: Deploy Shopify Theme (Production)
 
 on:
-  push:
-    branches:
-      - master   # Trigger khi push vào nhánh main (production)
+  release:
+    types: [published]
 
 jobs:
-  deploy-production:
-    name: Deploy Theme to Production
+  deploy-prod:
     runs-on: ubuntu-latest
     environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Show Production Secret
-        env:
-          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+
+      - name: Deploy theme to Shopify (production)
         run: |
-          echo "Deploying to PRODUCTION..."
-          echo "Token: $SHOPIFY_CLI_THEME_TOKEN"  # Sẽ bị mask thành ***
+          shopify theme push \
+            --json \
+            --theme 175522873378 \
+            --store ${{ secrets.SHOPIFY_FLAG_STORE }} \
+            --password ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }} \
+            --allow-live 
