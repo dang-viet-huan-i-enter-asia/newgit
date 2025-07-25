@@ -28,3 +28,4 @@ jobs:
             --theme 142213447734 \
             --store ${{ secrets.SHOPIFY_FLAG_STORE }} \
             --password ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+            --allow-live
